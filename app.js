@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const app = express();
+
+const routes = require('./routes/index');
 
 //settings
 app.set('port', process.env.PORT || 3000);
@@ -13,12 +16,15 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
 
 //routes
-
+app.use(routes);
 
 //static files
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 //start the server   
 app.listen(app.get('port'), () => {
